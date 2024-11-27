@@ -23,7 +23,7 @@ class Interface():
     def __init__(self):
         app = customtkinter.CTk()
         app.title("Calculatrice")
-        app.geometry("400x500")
+        # app.geometry("400x500")
 
         # Section pour le label
         global screen
