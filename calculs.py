@@ -43,7 +43,7 @@ class Calculs():
             self.current_value += float(self.new_value)
         elif self.operator == '-':
             self.current_value -= float(self.new_value)
-        elif self.operator == 'x':
+        elif self.operator == '*':
             self.current_value *= float(self.new_value)
         elif self.operator == '/':
             if float(self.new_value) != 0:
