@@ -19,6 +19,17 @@ def on_clear_click():
     calculs.clear()
     screen.configure(text='0')
 
+def on_key_press(event):
+    key = event.char
+    if key.isdigit():
+        on_button_click(int(key))
+    elif key in ['+', '-', '*', '/']:
+        on_buttonOp_click(key)
+    elif key == '=' or key == '\r':
+        on_equals_click()
+    elif key == 'c' or key == 'C':
+        on_clear_click()
+
 class Interface():
     def __init__(self):
         app = customtkinter.CTk()
@@ -55,6 +66,8 @@ class Interface():
         # Bouton Clear
         clear_button = customtkinter.CTkButton(app, text='C', command=on_clear_click)
         clear_button.pack(pady=5)
+
+        app.bind("<Key>", on_key_press)
 
         app.mainloop()
 
