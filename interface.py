@@ -1,62 +1,34 @@
 import customtkinter
-from calculs import handle_button_click, handle_buttonOp_click, handle_label_change
+from calculs import Calculs
+
+calculs = Calculs()
 
 def on_button_click(value):
-    """
-    Gère l'événement de clic sur un bouton.
+    result = calculs.input_number(value)
+    screen.configure(text=result)
 
-    Args:
-        value (str): La valeur associée au bouton cliqué.
+def on_buttonOp_click(op):
+    calculs.input_operator(op)
+    screen.configure(text=calculs.current_value)
 
-    Returns:
-        str: La valeur du bouton cliqué.
-    """
-    handle_button_click(value)
-    return value
+def on_equals_click():
+    result = calculs.calculate()
+    screen.configure(text=result)
 
-def on_buttonOp_click(value):
-    """
-    Gère l'événement de clic sur un bouton opératoire.
-
-    Args:
-        value (str): La valeur associée au bouton opératoire cliqué.
-
-    Returns:
-        str: La valeur du bouton opératoire cliqué.
-    """
-    handle_buttonOp_click(value)
-    return value
-
-def on_label_change(value):
-    """
-    Gère le changement de la valeur du label.
-
-    Args:
-        value (str): La nouvelle valeur du label.
-
-    Returns:
-        str: La nouvelle valeur du label.
-    """
-    print(f"Label changed to {value}!")
-    return value
-
-
+def on_clear_click():
+    calculs.clear()
+    screen.configure(text='0')
 
 class Interface():
-    """
-    Gère l'interface graphique de l'application.
-    """
     def __init__(self):
         app = customtkinter.CTk()
-        app.title("my app")
+        app.title("Calculatrice")
         app.geometry("400x500")
 
         # Section pour le label
-        label_frame = customtkinter.CTkFrame(app)
-        label_frame.pack(pady=50)
-
-        screen = customtkinter.CTkLabel(label_frame, text=" ", font=("Helvetica", 32))
-        screen.pack()
+        global screen
+        screen = customtkinter.CTkLabel(app, text="0", font=("Helvetica", 32))
+        screen.pack(pady=10)
 
         # Section pour les boutons numériques
         num_frame = customtkinter.CTkFrame(app)
@@ -68,13 +40,21 @@ class Interface():
             if i == 0:
                 button.grid(row=3, column=1)
 
+        # Bouton égal
+        equals_button = customtkinter.CTkButton(app, text='=', command=on_equals_click)
+        equals_button.pack(pady=5)
+
         # Section pour les boutons opératoires
         op_frame = customtkinter.CTkFrame(app)
         op_frame.pack(pady=10)
 
-        for i, sign in enumerate(["+", "-", "x", "/"]):
+        for sign in ["+", "-", "x", "/"]:
             buttonOp = customtkinter.CTkButton(op_frame, text=sign, command=lambda sign=sign: on_buttonOp_click(sign))
             buttonOp.pack(side="left", padx=5, pady=5)
 
+        # Bouton Clear
+        clear_button = customtkinter.CTkButton(app, text='C', command=on_clear_click)
+        clear_button.pack(pady=5)
+
         app.mainloop()
-    
+
